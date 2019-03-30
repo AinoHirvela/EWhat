@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,13 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +31,12 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton myButton;
     private String TAG="TEST";
 
-    private List<Food> foodList=new ArrayList<>();
-
+    //定义要显示的数据集合
+    private ListView listView;
+    //定义数据适配器
+    private SimpleAdapter simpleAdapter;
+    //被展示的数据源
+    private List<Map<String,Object>> dataList;
     @SuppressWarnings("CommitTransaction")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +64,6 @@ public class MainActivity extends AppCompatActivity {
         foodButton=(RadioButton)findViewById(R.id.food_tab);
         myButton= (RadioButton) findViewById(R.id.my_tab);
         initView();
-        initFood();
-
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        FoodAdapter adapter=new FoodAdapter(foodList);
-        recyclerView.setAdapter(adapter);
 
         //设置监听器
         RadioButton.OnClickListener radioButtonListener=new RadioButton.OnClickListener(){
@@ -81,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.location_tab:
                         break;
                     //天气、加号、食品库
+                    //登录注册界面暂时写在天气下面
+                    case R.id.weather_tab:
+                        Intent intentLogin=new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(intentLogin);
+                        break;
                     case R.id.my_tab:
                         Intent intent1=new Intent(MainActivity.this,MyActivity.class);
                         startActivity(intent1);
@@ -109,20 +107,6 @@ public class MainActivity extends AppCompatActivity {
         RadioButton myButton=(RadioButton)findViewById(R.id.my_tab);
     }
 
-    private void initFood(){
-        for (int i=0;i<3;i++){
-            Food food1=new Food("food1",R.drawable.message);
-            foodList.add(food1);
-            Food food2=new Food("food2",R.drawable.message);
-            foodList.add(food2);
-            Food food3=new Food("food3",R.drawable.message);
-            foodList.add(food3);
-            Food food4=new Food("food4",R.drawable.message);
-            foodList.add(food4);
-            Food food5=new Food("food5",R.drawable.message);
-            foodList.add(food5);
-        }
-    }
     //获取菜单填充器，将自定义的菜单文件进行填充
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -135,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         //显示提交按钮
         searchView.setSubmitButtonEnabled(true);
-        searchView.setQueryHint("查找自己喜欢的食物");
+        searchView.setQueryHint("查找自己喜欢的");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {
