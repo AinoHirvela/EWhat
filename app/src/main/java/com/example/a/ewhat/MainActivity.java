@@ -1,6 +1,12 @@
 package com.example.a.ewhat;
 
+import android.app.Service;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Vibrator;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +24,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +41,11 @@ import java.util.Map;
 
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
+    //添加加速度传感器
+    private SensorManager mSensorManager;
+    private Vibrator vibrator;
+
     private DBOpenHelper dbOpenHelper;
     //定义按钮
     private RadioButton locationButton;
@@ -37,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton addButton;
     private RadioButton foodButton;
     private RadioButton myButton;
+    private TextView nowlocation;
+    String street;
+
     private String TAG="TEST";
+
+    private LocationClient mLocationClient=null;
 
     private List<Food> foodList=new ArrayList<>();
 
@@ -68,7 +89,24 @@ public class MainActivity extends AppCompatActivity {
         addButton=(RadioButton)findViewById(R.id.add_tab);
         foodButton=(RadioButton)findViewById(R.id.food_tab);
         myButton= (RadioButton) findViewById(R.id.my_tab);
-        initView();
+        nowlocation=(TextView)findViewById(R.id.nowlocation);
+
+        //内部类对象
+        MyLocationListener myLocationListener=new MyLocationListener();
+        //实例化
+        mLocationClient=new LocationClient(this);
+        LocationClientOption option=new LocationClientOption();
+        option.setIsNeedAddress(true);
+        option.setAddrType("all");
+        option.setCoorType("db0911");
+        mLocationClient.setLocOption(option);
+        mLocationClient.registerLocationListener(myLocationListener);
+        mLocationClient.start();
+
+        //获得传感器管理服务
+        mSensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
+        vibrator=(Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
+        //initView();
         initFood();
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recycler_view);
 
@@ -182,9 +220,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        //加速度传感器
+        mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
     protected  void onDestroy(){
         //关闭SQLiteStudio
         SQLiteStudioService.instance().stop();
         super.onDestroy();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        int sensorType=event.sensor.getType();
+        float[] values=event.values;
+        if (sensorType==Sensor.TYPE_ACCELEROMETER){
+            if (Math.abs(values[0])>14||Math.abs(values[1])>14||Math.abs(values[2])>14){
+                Toast.makeText(this,"不要摇啦！！",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    //定义内部类
+    private class MyLocationListener implements BDLocationListener{
+        @Override
+        public void onReceiveLocation(BDLocation location){
+            try {
+                street=location.getAddrStr();
+                Toast.makeText(getApplicationContext(),street,Toast.LENGTH_LONG).show();
+                nowlocation.setText("目前位置："+street);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
