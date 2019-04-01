@@ -1,10 +1,15 @@
 package com.example.a.ewhat;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,12 +20,15 @@ import java.util.List;
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder>{
 
     private List<Food> mFoodList;
+
     static class ViewHolder extends RecyclerView.ViewHolder{
+        View foodView;
         ImageView foodImage;
         TextView foodName;
 
         public ViewHolder(android.view.View itemView) {
             super(itemView);
+            foodView=itemView;
             foodImage=(ImageView)itemView.findViewById(R.id.food_image);
             foodName=(TextView)itemView.findViewById(R.id.food_name);
         }
@@ -34,7 +42,19 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         android.view.View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.food_item,parent,false);
-        ViewHolder holder=new ViewHolder(view);
+        final ViewHolder holder=new ViewHolder(view);
+
+        //注册事件监听器
+        holder.foodImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*int position=holder.getAdapterPosition();
+                Food food=mFoodList.get(position);
+                Toast.makeText(v.getContext(),"you click image"+food.getFoodName(),Toast.LENGTH_SHORT).show();*/
+                Intent intent=new Intent(v.getContext(),DetailActivity.class);
+                v.getContext().startActivity(intent);
+            }
+        });
         return holder;
     }
 

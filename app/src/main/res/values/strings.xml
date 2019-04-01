@@ -4,7 +4,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
     <string name="menu_search">search</string>
-    <string name="menu_locate">locate</string>
+    <string name="menu_locate">位置</string>
     <string name="menu_info">信息</string>
     <string name="app_name">EWhat</string>
     <string name="title_activity_login">Sign in</string>

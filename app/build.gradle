@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 26
     buildToolsVersion "28.0.3"
     defaultConfig {
@@ -17,6 +19,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            jni.srcDirs = []
+        }
+    }
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -25,13 +35,14 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
-    compile'com.android.support:recyclerview-v7:26.+'
+    compile 'com.android.support:recyclerview-v7:26.+'
     testCompile 'junit:junit:4.12'
     compile files('libs/SQLiteStudioRemote.jar')
     // 和风天气
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile files('libs/BaiduLBS_Android.jar')
 }
 
 apply plugin: 'com.mob.sdk'
