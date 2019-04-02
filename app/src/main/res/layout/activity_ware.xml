@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorMediumAquamarine">
+    </android.support.v7.widget.Toolbar>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2"
+        android:rowCount="4">
+
+        <ImageButton
+            android:layout_width="380px"
+            android:layout_height="380px"
+            android:text="图片文本"
+            app:srcCompat="@android:color/holo_red_dark"
+            android:id="@+id/imageButton1" />
+
+        <ImageButton
+            android:layout_width="380px"
+            android:layout_height="380px"
+            app:srcCompat="@android:color/holo_purple"
+            android:id="@+id/imageButton2" />
+
+        <ImageButton
+            android:layout_width="380px"
+            android:layout_height="380px"
+            app:srcCompat="@android:color/holo_green_dark"
+            android:id="@+id/imageButton3" />
+
+        <ImageButton
+            android:layout_width="380px"
+            android:layout_height="380px"
+            app:srcCompat="@android:color/holo_blue_dark"
+            android:id="@+id/imageButton4" />
+
+        <ImageButton
+            android:layout_width="380px"
+            android:layout_height="380px"
+            app:srcCompat="@color/smssdk_black"
+            android:id="@+id/imageButton5" />
+
+        <ImageButton
+            android:layout_width="380px"
+            android:layout_height="380px"
+            app:srcCompat="@android:color/background_light"
+            android:id="@+id/imageButton6" />
+
+        <ImageButton
+            android:layout_width="380px"
+            android:layout_height="380px"
+            app:srcCompat="@android:color/holo_orange_light"
+            android:id="@+id/imageButton8" />
+
+    </GridLayout>
+
+</LinearLayout>
