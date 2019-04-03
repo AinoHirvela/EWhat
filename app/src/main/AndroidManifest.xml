@@ -47,6 +47,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -54,9 +55,10 @@
             android:name=".MyActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".LogupActivity" />
+        <activity android:name=".activity_information"></activity>
         <activity android:name=".DetailActivity">
         </activity>
         <activity android:name=".BaiDuMapTest"/>
-        <activity android:name=".LogupActivity"></activity>
     </application>
 </manifest>
