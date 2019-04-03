@@ -45,7 +45,7 @@ public class MyActivity extends AppCompatActivity {
         });
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
-        //listView的页面跳转
+        //listView的页面跳转 
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(MyActivity.this,android.R.layout.simple_list_item_1,data);
         ListView listView=(ListView)findViewById(R.id.list_view);
         listView.setAdapter(adapter);
