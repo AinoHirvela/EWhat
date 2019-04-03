@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //打开SQLiteStdio
+        SQLiteStudioService.instance().start(this);
+        //创建EWhat.db数据库
+        dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
         //隐藏原标题
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         //定义ToolBar
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     //天气、加号、食品库
                     //登录注册界面暂时写在天气下面
                     case R.id.weather_tab:
+                        dbOpenHelper.getWritableDatabase();
                         Intent intentLogin=new Intent(MainActivity.this,LoginActivity.class);
                         startActivity(intentLogin);
                         break;
@@ -91,11 +96,6 @@ public class MainActivity extends AppCompatActivity {
         addButton.setOnClickListener(radioButtonListener);
         foodButton.setOnClickListener(radioButtonListener);
         myButton.setOnClickListener(radioButtonListener);
-
-        //打开SQLiteStdio
-        SQLiteStudioService.instance().start(this);
-        //创建EWhat.db数据库
-        dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
     }
 
     //初始化界面
