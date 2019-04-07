@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.smssdk.SMSSDK;
+
 public class SetpwdActivity extends AppCompatActivity {
     private Button button_yes;
     private TextView textView_reset1;
@@ -41,7 +43,11 @@ public class SetpwdActivity extends AppCompatActivity {
                 SQLiteDatabase db=dbOpenHelper.getWritableDatabase();
                 //根据输入的账号到数据库内查询
                 Cursor cursor=db.query("User",new String[]{"Uno"},"Uno=?",new String[]{number},null,null,null);
+                if(cursor!=null&&cursor.getCount()>=1) {
 
+                } else {
+
+                }
             }
         });
     }

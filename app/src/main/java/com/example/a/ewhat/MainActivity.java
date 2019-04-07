@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import interfaces.heweather.com.interfacesmodule.bean.weather.*;
+import interfaces.heweather.com.interfacesmodule.view.HeConfig;
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -73,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SQLiteStudioService.instance().start(this);
         //创建EWhat.db数据库
         dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
+        //连接和风天气
+        HeConfig.init("HE1903191601381347","3c2f0d928abd44daa4acb19b57528ae6");
         //隐藏原标题
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         //定义ToolBar
@@ -132,9 +136,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     //天气、加号、食品库
                     //登录注册界面暂时写在天气下面
                     case R.id.weather_tab:
-                        dbOpenHelper.getWritableDatabase();
+                        /*dbOpenHelper.getWritableDatabase();
                         Intent intentLogin=new Intent(MainActivity.this,LoginActivity.class);
-                        startActivity(intentLogin);
+                        startActivity(intentLogin);*/
+                        Intent intent=new Intent(MainActivity.this, Weather.class);
+                        startActivity(intent);
                         break;
                     case R.id.my_tab:
                         Intent intent1=new Intent(MainActivity.this,MyActivity.class);
