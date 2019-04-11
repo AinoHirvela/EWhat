@@ -9,10 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class MyActivity extends AppCompatActivity {
     //设置显示的list View的信息
-    private String[] data={"我的收藏","我吃过的","周报"};
+    //private String[] data={"我的收藏","我吃过的","周报"};
     //判断点击的item
     private void  toNewActivity(int position){
         Intent i;
@@ -35,7 +42,7 @@ public class MyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //图片按钮的页面跳转
-        ImageButton btn1=(ImageButton)findViewById(R.id.btn1);
+        ImageButton btn1=(ImageButton)findViewById(R.id.picture);
         btn1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -46,8 +53,27 @@ public class MyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
         //listView的页面跳转
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(MyActivity.this,android.R.layout.simple_list_item_1,data);
+       //1拿到listview的对象
         ListView listView=(ListView)findViewById(R.id.list_view);
+        //2数据源
+        List<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("lv_pic",R.drawable.like);
+        map.put("lv_name","我的收藏");
+        list.add(map);
+        map=new HashMap<String, Object>();
+        map.put("lv_pic",R.drawable.eaten);
+        map.put("lv_name","我吃过的");
+        list.add(map);
+        map=new HashMap<String, Object>();
+        map.put("lv_pic",R.drawable.calendar);
+        map.put("lv_name","周报");
+        list.add(map);
+        //3设置适配器
+        SimpleAdapter adapter=new SimpleAdapter(
+                this,list,R.layout.item_my,new String[]{"lv_pic","lv_name"},new int[]{R.id.lv_pic,R.id.lv_name}
+        );
+        //4关联适配器
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
