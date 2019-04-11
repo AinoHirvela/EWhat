@@ -28,7 +28,12 @@
                 app:titleTextColor="@android:color/white"
                 android:background="@color/colorMediumAquamarine">
             </android.support.v7.widget.Toolbar>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/nowlocation"
+                android:text="正在定位..."/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
