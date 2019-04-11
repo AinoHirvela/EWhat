@@ -103,7 +103,7 @@
                     android:id="@+id/todayinfo1_pm25img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow">
+                    >
                 </ImageView>
             </LinearLayout>
             <LinearLayout
@@ -111,27 +111,26 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:orientation="vertical"
-
                 android:layout_alignParentRight="true">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PM2.5"
+                    android:text=""
                     android:textColor="#FFFFFF"
                     android:textSize="27.0sp"/>
                 <TextView
                     android:id="@+id/todayinfo1_pm25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="220"
+                    android:text=""
                     android:textColor="#FFFFFF"
                     android:textSize="20.0sp"/>
                 <TextView
                     android:id="@+id/todayinfo1_pm25status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="重度污染"
+                    android:text=""
                     android:textColor="#FFFFFF"
                     android:textSize="20.0sp"/>
             </LinearLayout>
@@ -151,14 +150,16 @@
                     android:id="@+id/todayinfo2_weatherStatusImg"
                     android:layout_width="155dp"
                     android:layout_height="128dp"
-                    android:src="@drawable/arrow"/>
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/sunny"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/todayinfo2_linear2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-
+                android:layout_marginTop="30dp"
                 android:layout_toRightOf="@id/todayinfo2_linear1">
 
                 <TextView

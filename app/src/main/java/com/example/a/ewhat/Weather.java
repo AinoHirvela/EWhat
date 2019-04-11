@@ -1,5 +1,6 @@
 package com.example.a.ewhat;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
 
 public class Weather extends AppCompatActivity implements View.OnClickListener {
     private String city_key="101030100";
@@ -61,17 +63,16 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
         weatherStateImg = (ImageView)findViewById(R.id.todayinfo2_weatherStatusImg);
         pmStateImg = (ImageView)findViewById(R.id.todayinfo1_pm25img);
 
-        cityNameT.setText("N/A");
-
-        cityT.setText("N/A");
-        timeT.setText("N/A");
-        humidityT.setText("N/A");
-        weekT.setText("N/A");
-        pmDataT.setText("N/A");
-        pmQualityT.setText("N/A");
-        temperatureT.setText("N/A");
-        climateT.setText("N/A");
-        windT.setText("N/A");
+        cityNameT.setText("NULL");
+        cityT.setText("NULL");
+        timeT.setText("NULL");
+        humidityT.setText("NULL");
+        weekT.setText("NULL");
+        //pmDataT.setText("NULL");
+        pmQualityT.setText("NULL");
+        temperatureT.setText("NULL");
+        climateT.setText("NULL");
+        windT.setText("NULL");
     }
 
     @Override
@@ -96,6 +97,10 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
         if(view.getId()==R.id.title_city_update) {
             Toast.makeText(Weather.this,"刷新数据",Toast.LENGTH_SHORT).show();
             getWeatherDatafromNet(city_key);
+        }
+        if(view.getId()==R.id.title_city_share) {
+            Intent intent=new Intent(Weather.this,MainActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -242,13 +247,55 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
         cityNameT.setText(todayWeather.getCity()+"天气");
         cityT.setText(todayWeather.getCity());
         timeT.setText(todayWeather.getUpdatetime());
-        humidityT.setText("湿度:"+todayWeather.getShidu());
+        humidityT.setText("湿度: "+todayWeather.getShidu());
         pmDataT.setText(todayWeather.getPm25());
         pmQualityT.setText(todayWeather.getQuality());
-        weekT.setText(todayWeather.getDate());
+        Calendar calendar=Calendar.getInstance();
+        String month=String.valueOf(calendar.get(Calendar.MONTH)+1)+"月";
+        weekT.setText(month+todayWeather.getDate());
         temperatureT.setText(todayWeather.getHigh()+"~"+todayWeather.getLow());
         climateT.setText(todayWeather.getType());
-        windT.setText("风力:"+todayWeather.getFengli());
-        Toast.makeText(Weather.this,"更新成功",Toast.LENGTH_SHORT).show();
+        windT.setText("风力: "+todayWeather.getFengli());
+
+
+        if(todayWeather.getType()!=null) {
+            switch(todayWeather.getType()) {
+                case "晴":
+                    weatherStateImg.setImageResource(R.drawable.sunny);
+                    break;
+                case "阴":
+                    weatherStateImg.setImageResource(R.drawable.cloudy);
+                    break;
+                case "多云":
+                    weatherStateImg.setImageResource(R.drawable.shady);
+                    break;
+                case "小雨":
+                    weatherStateImg.setImageResource(R.drawable.lightrain);
+                    break;
+                case "中雨":
+                case "大雨":
+                    weatherStateImg.setImageResource(R.drawable.rain);
+                    break;
+                case "阵雨":
+                    weatherStateImg.setImageResource(R.drawable.shower);
+                    break;
+                case "雷阵雨":
+                    weatherStateImg.setImageResource(R.drawable.thundershower);
+                    break;
+                case "阵雪":
+                case "暴雪":
+                case "小雪":
+                case "中雪":
+                case "大雪":
+                    weatherStateImg.setImageResource(R.drawable.snow);
+                    break;
+                case "雨夹雪":
+                    weatherStateImg.setImageResource(R.drawable.sleet);
+                    break;
+                default:
+                    break;
+            }
+            Toast.makeText(Weather.this,"更新成功",Toast.LENGTH_SHORT).show();
+        }
     }
 }

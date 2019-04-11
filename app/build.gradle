@@ -52,8 +52,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     //用于加载和展示图片
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    
 }
 
+//用户获取短信验证码
 apply plugin: 'com.mob.sdk'
 MobSDK {
     appKey "2aa87d0513a44"
