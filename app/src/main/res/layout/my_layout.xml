@@ -12,7 +12,7 @@
             android:id="@+id/picture"
             android:layout_width="176dp"
             android:layout_height="157dp"
-            android:src="@drawable/apple" />
+            android:src="@drawable/like" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
