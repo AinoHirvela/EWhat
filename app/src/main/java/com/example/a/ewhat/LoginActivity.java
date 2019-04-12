@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textView_pwd;
     private Button button_login;
     private Button button_logup;
+    private Button button_forget;
     private ImageView imageView_head;
     private ImageButton imageButton_back;
 
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         textView_pwd=(TextView)findViewById(R.id.editText_pwd);
         button_login=(Button)findViewById(R.id.button_comfirm);
         button_logup=(Button)findViewById(R.id.button_logup);
+        button_forget=(Button)findViewById(R.id.button_forget);
         imageView_head=(ImageView)findViewById(R.id.imageView_head);
         imageButton_back=(ImageButton)findViewById(R.id.imageButton_back);
     }
@@ -58,13 +60,13 @@ public class LoginActivity extends AppCompatActivity {
                             .setMessage("用户名不能为空！")
                             .setPositiveButton("确定", null)
                             .show();
-                }else if(textView_pwd.getText().toString().equals("")){
+                } else if (textView_pwd.getText().toString().equals("")){
                     new AlertDialog.Builder(LoginActivity.this)
                             .setTitle("系统提示")
                             .setMessage("密码不能为空！")
                             .setPositiveButton("确定", null)
                             .show();
-                }else{
+                } else {
                     //获得用户输入用户名和密码
                     String[] textInfo={textView_name.getText().toString(),textView_pwd.getText().toString()};
                     Cursor cursor1=db.query("User",null,"Uno=? and Upwd=?",textInfo,null,null,null);
@@ -82,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .setMessage("密码错误，请检查后重新输入！")
                                     .setPositiveButton("确定", null)
                                     .show();
-                        }else{
+                        } else {
                             new AlertDialog.Builder(LoginActivity.this)
                                     .setTitle("系统提示")
                                     .setMessage("账号不存在，请先注册账号！")
@@ -104,9 +106,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        button_forget.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intentForget=new Intent(LoginActivity.this,ForgetActivity.class);
+                startActivity(intentForget);
+            }
+        });
+
         imageButton_back.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 Intent intentBack=new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(intentBack);
             }

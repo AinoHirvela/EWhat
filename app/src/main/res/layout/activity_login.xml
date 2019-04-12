@@ -12,19 +12,6 @@
     android:background="@drawable/loginbackground"
     tools:context="com.example.a.ewhat.LoginActivity">
 
-    <Button
-        android:text="注册"
-        android:id="@+id/button_logup"
-        android:background="#00000000"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="0px"
-        android:layout_marginTop="0px"
-        android:layout_height="50px"
-        android:layout_width="100px"
-        android:textSize="18sp" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,18 +35,6 @@
         android:layout_alignLeft="@+id/editText_name"
         android:layout_alignStart="@+id/editText_name" />
 
-    <Button
-        android:text="登录"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_comfirm"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/editText_pwd"
-        android:layout_alignLeft="@+id/editText_pwd"
-        android:layout_alignStart="@+id/editText_pwd"
-        android:layout_alignRight="@+id/editText_pwd"
-        android:layout_alignEnd="@+id/editText_pwd" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,15 +43,46 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/imageView_head" />
 
+    <Button
+        android:text="忘记密码?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_forget"
+        android:background="#00000000"
+        android:layout_below="@+id/editText_pwd"
+        android:layout_alignRight="@+id/editText_pwd"
+        android:layout_alignEnd="@+id/editText_pwd"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:text="登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_comfirm"
+        android:layout_below="@+id/button_forget"
+        android:layout_alignRight="@+id/button_forget"
+        android:layout_alignEnd="@+id/button_forget"
+        android:layout_alignLeft="@+id/editText_pwd"
+        android:layout_alignStart="@+id/editText_pwd" />
+
+    <Button
+        android:text="注册"
+        android:id="@+id/button_logup"
+        android:background="#00000000"
+        android:layout_height="50px"
+        android:layout_width="100px"
+        android:textSize="16sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/editText_name"
-        android:layout_toStartOf="@+id/editText_name"
-        android:layout_marginRight="27dp"
-        android:layout_marginEnd="27dp"
         android:background="#00000000"
         android:src="@drawable/arrow"
         android:id="@+id/imageButton_back"
-        android:layout_alignBottom="@+id/button_logup" />
+        android:layout_below="@+id/imageView_head"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

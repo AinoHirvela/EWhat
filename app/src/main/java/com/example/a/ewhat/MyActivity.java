@@ -53,8 +53,10 @@ public class MyActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
         //listView的页面跳转
        //1拿到listview的对象
+
         ListView listView=(ListView)findViewById(R.id.list_view);
         //2数据源
         List<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
