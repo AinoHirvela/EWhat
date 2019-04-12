@@ -41,6 +41,9 @@ public class MyActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.my_layout);
         //图片按钮的页面跳转
         ImageButton btn1=(ImageButton)findViewById(R.id.picture);
         btn1.setOnClickListener(new View.OnClickListener(){
@@ -50,8 +53,6 @@ public class MyActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_layout);
         //listView的页面跳转
        //1拿到listview的对象
         ListView listView=(ListView)findViewById(R.id.list_view);
@@ -82,7 +83,7 @@ public class MyActivity extends AppCompatActivity {
             }
         });
         //button的页面跳转
-        Button button=(Button)findViewById(R.id.button);
+        Button button=(Button)findViewById(R.id.ok);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
