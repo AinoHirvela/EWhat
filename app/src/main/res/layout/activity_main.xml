@@ -52,29 +52,24 @@
             android:id="@+id/location_tab"
             style="@style/Custom.TabRadioButton"
             android:checked="true"
-            android:drawableTop="@drawable/message"
-            android:text="位置"/>
+            android:drawableTop="@drawable/message" />
         <RadioButton
             android:id="@+id/weather_tab"
             style="@style/Custom.TabRadioButton"
-            android:drawableTop="@drawable/message"
-            android:text="天气"/>
-        <RadioButton
+            android:drawableTop="@drawable/message"/>
+        <!--<RadioButton
             android:id="@+id/add_tab"
             style="@style/Custom.TabRadioButton"
             android:drawableTop="@drawable/message"
-            android:text="添加"/>
-
+            android:text="添加"/>-->
         <RadioButton
             android:id="@+id/food_tab"
             style="@style/Custom.TabRadioButton"
-            android:drawableTop="@drawable/message"
-            android:text="食物"/>
+            android:drawableTop="@drawable/message"/>
         <RadioButton
             android:id="@+id/my_tab"
             style="@style/Custom.TabRadioButton"
-            android:drawableTop="@drawable/message"
-            android:text="我的"/>
+            android:drawableTop="@drawable/message"/>
     </RadioGroup>
 
 

@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         imageButton_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intentBack=new Intent(LoginActivity.this,MainActivity.class);
+                Intent intentBack=new Intent(LoginActivity.this,MyActivity.class);
                 startActivity(intentBack);
             }
         });

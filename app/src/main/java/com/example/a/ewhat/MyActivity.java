@@ -63,7 +63,7 @@ public class MyActivity extends AppCompatActivity {
         //创建EWhat.db数据库
         dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
         //图片按钮的页面跳转
-        ImageButton btn1=(ImageButton)findViewById(R.id.picture);
+        de.hdodenhof.circleimageview.CircleImageView btn1=(de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.image);
         btn1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -102,16 +102,7 @@ public class MyActivity extends AppCompatActivity {
                 toNewActivity(position);
             }
         });
-        //button的页面跳转
-        Button button=(Button)findViewById(R.id.ok);
-        button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                dbOpenHelper.getWritableDatabase();
-                Intent i=new Intent(MyActivity.this,LoginActivity.class);
-                startActivity(i);
-            }
-        });
+
 
 
 
@@ -123,7 +114,10 @@ public class MyActivity extends AppCompatActivity {
         findViewById(R.id.parallel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                animateParallel();
+                //animateParallel();
+                dbOpenHelper.getWritableDatabase();
+                Intent i=new Intent(MyActivity.this,LoginActivity.class);
+                startActivity(i);
             }
         });
 
@@ -137,9 +131,18 @@ public class MyActivity extends AppCompatActivity {
         findViewById(R.id.sequentially).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                animateSequentially();
+                //animateSequentially();
+                Intent i=new Intent(MyActivity.this,MainActivity.class);
+                startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        animateParallel();
+        animateSequentially();
     }
 
     protected void simpleAnimation() {
@@ -150,12 +153,10 @@ public class MyActivity extends AppCompatActivity {
                 .translationX(-200, 0)
                 .interpolator(new DecelerateInterpolator())
                 .duration(2000)
-
                 .thenAnimate(mountain)
                 .scale(1f, 0.5f, 1f)
                 .interpolator(new AccelerateInterpolator())
                 .duration(1000)
-
                 .start();
     }
 
@@ -164,18 +165,14 @@ public class MyActivity extends AppCompatActivity {
                 .dp().translationY(-1000, 0)
                 .alpha(0, 1)
                 .singleInterpolator(new OvershootInterpolator())
-
                 .andAnimate(percent)
                 .scale(0, 1)
-
                 .andAnimate(text)
                 .textColor(Color.BLACK, Color.WHITE)
                 .backgroundColor(Color.WHITE, Color.BLACK)
-
                 .waitForHeight()
                 .singleInterpolator(new AccelerateDecelerateInterpolator())
                 .duration(2000)
-
                 .thenAnimate(percent)
                 .custom(new AnimationListener.Update<TextView>() {
                     @Override
@@ -183,21 +180,18 @@ public class MyActivity extends AppCompatActivity {
                         view.setText(String.format(Locale.US, "%.02f%%", value));
                     }
                 }, 0, 1)
-
                 .andAnimate(image)
                 .rotation(0, 360)
-
                 .duration(5000)
-
                 .start();
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 viewAnimator.cancel();
-                Toast.makeText(getBaseContext(), "animator canceled", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "animator canceled", Toast.LENGTH_SHORT).show();
             }
-        }, 4000);
+        }, 7000);
     }
 
     protected void animateSequentially() {

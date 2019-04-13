@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //定义按钮
     private RadioButton locationButton;
     private RadioButton weatherButtonn;
-    private RadioButton addButton;
+    //private RadioButton addButton;
     private RadioButton foodButton;
     private RadioButton myButton;
     private TextView nowlocation;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //实例化Button
         weatherButtonn=(RadioButton)findViewById(R.id.weather_tab);
         locationButton=(RadioButton)findViewById(R.id.location_tab);
-        addButton=(RadioButton)findViewById(R.id.add_tab);
+        //addButton=(RadioButton)findViewById(R.id.add_tab);
         foodButton=(RadioButton)findViewById(R.id.food_tab);
         myButton= (RadioButton) findViewById(R.id.my_tab);
         nowlocation=(TextView)findViewById(R.id.nowlocation);
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         };
         locationButton.setOnClickListener(radioButtonListener);
         weatherButtonn.setOnClickListener(radioButtonListener);
-        addButton.setOnClickListener(radioButtonListener);
+        //addButton.setOnClickListener(radioButtonListener);
         foodButton.setOnClickListener(radioButtonListener);
         myButton.setOnClickListener(radioButtonListener);
     }
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void initView(){
         RadioButton locationButton=(RadioButton)findViewById(R.id.location_tab);
         RadioButton weatherButton=(RadioButton)findViewById(R.id.weather_tab);
-        RadioButton addButton=(RadioButton)findViewById(R.id.add_tab);
+        //RadioButton addButton=(RadioButton)findViewById(R.id.add_tab);
         RadioButton foodButton=(RadioButton)findViewById(R.id.food_tab);
         RadioButton myButton=(RadioButton)findViewById(R.id.my_tab);
     }
@@ -171,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             foodList.add(food1);
             Food food2 =new Food("food2",R.drawable.message);
             foodList.add(food2);
-            Food food3 =new Food("food3",R.drawable.message);
-            foodList.add(food3);
+            //Food food3 =new Food("food3",R.drawable.message);
+            //foodList.add(food3);
             Food food4 =new Food("food4",R.drawable.message);
             foodList.add(food4);
             Food food5 =new Food("food5",R.drawable.message);
