@@ -29,7 +29,7 @@ public class BaiDuMapTest extends AppCompatActivity {
         mBaiduMap=mMapView.getMap();
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setTrafficEnabled(true);
-
+        mBaiduMap.setMyLocationEnabled(true);
     }
 
     @Override

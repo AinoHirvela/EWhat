@@ -6,7 +6,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
+import android.os.Looper;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,11 +19,14 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
@@ -34,12 +40,29 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.Bmob;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -151,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
     }
 
+
     //初始化界面
     private void initView(){
         RadioButton locationButton=(RadioButton)findViewById(R.id.location_tab);
@@ -161,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void initFood(){
-        for (int i=0;i<3;i++){
+        /*for (int i=0;i<3;i++){
             Food food1 =new Food("food1",R.drawable.message);
             foodList.add(food1);
             Food food2 =new Food("food2",R.drawable.message);
@@ -172,7 +196,61 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             foodList.add(food4);
             Food food5 =new Food("food5",R.drawable.message);
             foodList.add(food5);
-        }
+        }*/
+        //用于获取response
+
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10,TimeUnit.SECONDS)
+                .build();
+
+        //完成搭建request
+        Request request=new Request.Builder()
+                .url(Constant.URL_GetFood)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            //判断是否出错
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+                if (e instanceof SocketTimeoutException){
+                    Looper.prepare();
+                    Toast.makeText(MainActivity.this,"连接超时，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+                if (e instanceof ConnectException){
+                    //Log.i("TAG","连接失败");
+                    e.printStackTrace();
+                    Looper.prepare();
+                    Toast.makeText(MainActivity.this,"连接错误，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+
+            //这是最重要的回复数据的内容
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //将JSON内容转换为字符串
+                String responseData=response.body().string();
+                //返回一个JSON数组
+                JSONArray jsonArray=null;
+                try {
+                    //填写数组
+                    jsonArray=new JSONArray(responseData);
+                    for (int i=0;i<jsonArray.length();i++){
+                        JSONObject jsonObject=null;
+                        //获取第一个数据
+                        jsonObject=jsonArray.getJSONObject(i);
+                        //接下来为添加内容
+                        Food food=new Food(jsonObject.getString("名称"),jsonObject.getString("图片"));
+                        foodList.add(food);
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     //获取菜单填充器，将自定义的菜单文件进行填充
     @Override
@@ -264,6 +342,66 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }
+    }
+
+    public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder>{
+
+        private List<Food> mFoodList;
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            View foodView;
+            ImageView foodImage;
+            TextView foodName;
+
+            public ViewHolder(android.view.View itemView) {
+                super(itemView);
+                foodView=itemView;
+                foodImage=(ImageView)itemView.findViewById(R.id.food_image);
+                foodName=(TextView)itemView.findViewById(R.id.food_name);
+            }
+        }
+
+        //构造函数
+        public FoodAdapter(List<Food> foodList){
+            mFoodList=foodList;
+        }
+
+        @Override
+        public FoodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            android.view.View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.food_item,parent,false);
+            final FoodAdapter.ViewHolder holder=new FoodAdapter.ViewHolder(view);
+
+            //注册事件监听器
+            holder.foodImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                /*int position=holder.getAdapterPosition();
+                Food food=mFoodList.get(position);
+                Toast.makeText(v.getContext(),"you click image"+food.getFoodName(),Toast.LENGTH_SHORT).show();*/
+                    int position=holder.getAdapterPosition();
+                    Food food=mFoodList.get(position);
+                    Intent intent=new Intent(v.getContext(),DetailActivity.class);
+                    intent.putExtra("foodimage",food.getImageId());
+                    intent.putExtra("foodname",food.getFoodName());
+                    v.getContext().startActivity(intent);
+                }
+            });
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(FoodAdapter.ViewHolder holder, int position) {
+            Food food=mFoodList.get(position);
+            //holder.foodImage.setImageResource(food.getImageId());
+            //holder.foodImage.setImageURI(Uri.fromFile(new File(food.getImageId())));
+            Glide.with(MainActivity.this).load(food.getImageId()).into(holder.foodImage);
+            holder.foodName.setText(food.getFoodName());
+        }
+
+        @Override
+        public int getItemCount() {
+            return mFoodList.size();
         }
     }
 }

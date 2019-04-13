@@ -35,14 +35,15 @@ public class MyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //图片按钮的页面跳转
-        ImageButton btn1=(ImageButton)findViewById(R.id.btn1);
+
+        /*ImageButton btn1=(ImageButton)findViewById(R.id.btn1);
         btn1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent i=new Intent(MyActivity.this,activity_information.class);
                 startActivity(i);
             }
-        });
+        });*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
         //listView的页面跳转 

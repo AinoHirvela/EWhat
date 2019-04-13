@@ -33,6 +33,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -42,10 +43,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/SQLiteStudioRemote.jar')
     // 和风天气
-    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    //compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile files('libs/BaiduLBS_Android.jar')
+
 }
 
 apply plugin: 'com.mob.sdk'

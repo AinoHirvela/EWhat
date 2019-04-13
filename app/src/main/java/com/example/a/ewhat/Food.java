@@ -6,10 +6,15 @@ package com.example.a.ewhat;
 //定义一个实体类
 public class Food {
     private String foodName;
-    private int imageId;
+    //private int imageId;
+    private String imageId;
 
     //构造函数
-    public Food(String foodName, int imageId){
+    /*public Food(String foodName, int imageId){
+        this.foodName=foodName;
+        this.imageId=imageId;
+    }*/
+    public Food(String foodName,String imageId){
         this.foodName=foodName;
         this.imageId=imageId;
     }
@@ -18,7 +23,10 @@ public class Food {
         return foodName;
     }
 
-    public int getImageId(){
+    /*public int getImageId(){
+        return imageId;
+    }*/
+    public String getImageId(){
         return imageId;
     }
 }
