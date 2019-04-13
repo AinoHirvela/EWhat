@@ -20,8 +20,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button button_login;
     private Button button_logup;
     private Button button_forget;
-    private ImageView imageView_head;
     private ImageButton imageButton_back;
+    private ImageView unameClear;
+    private ImageView pwdClear;
 
     //获取界面控件
     public void init() {
@@ -30,8 +31,12 @@ public class LoginActivity extends AppCompatActivity {
         button_login=(Button)findViewById(R.id.button_comfirm);
         button_logup=(Button)findViewById(R.id.button_logup);
         button_forget=(Button)findViewById(R.id.button_forget);
-        imageView_head=(ImageView)findViewById(R.id.imageView_head);
         imageButton_back=(ImageButton)findViewById(R.id.imageButton_back);
+        unameClear = (ImageView) findViewById(R.id.iv_unameClear);
+        pwdClear = (ImageView) findViewById(R.id.iv_pwdClear);
+
+        EditTextClearTools.addClearListener(textView_name,unameClear);
+        EditTextClearTools.addClearListener(textView_pwd,pwdClear);
     }
 
     @Override

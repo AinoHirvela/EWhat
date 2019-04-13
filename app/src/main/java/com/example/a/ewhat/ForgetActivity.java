@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mob.MobSDK;
@@ -26,6 +27,8 @@ public class ForgetActivity extends AppCompatActivity {
     private ImageButton imageButton_back;
     private EditText editText_key;
     private EditText editText_phone;
+    private ImageView unameClear;
+    private ImageView keyClear;
     private TimeCountUntil timeCountUntil;
     private EventHandler eventHandler;
     private String phone_number;
@@ -39,6 +42,11 @@ public class ForgetActivity extends AppCompatActivity {
         imageButton_back=(ImageButton)findViewById(R.id.imageButton_back);
         editText_key=(EditText)findViewById(R.id.editText_key);
         editText_phone=(EditText)findViewById(R.id.editText_phone);
+        unameClear=(ImageView)findViewById(R.id.iv_unameClear);
+        keyClear=(ImageView)findViewById(R.id.iv_keyClear);
+
+        EditTextClearTools.addClearListener(editText_phone,unameClear);
+        EditTextClearTools.addClearListener(editText_key,keyClear);
     }
 
     @Override

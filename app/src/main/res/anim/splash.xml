@@ -49,8 +49,8 @@
 
         <translate
             android:duration="1200"
-            android:toXDelta="-20%p"
-            android:toYDelta="-50%p"/>
+            android:toXDelta="0%p"
+            android:toYDelta="-37%p"/>
     </set>
 
 

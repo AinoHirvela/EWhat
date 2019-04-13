@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mob.MobSDK;
@@ -29,6 +31,10 @@ public class LogupActivity extends AppCompatActivity {
     private Button button_comfirm;
     private ImageButton imageButton_back;
     private EventHandler eventHandler;
+    private ImageView unameClear;
+    private ImageView pwdClear1;
+    private ImageView pwdClear2;
+    private ImageView keyClear;
     private boolean flag=true; //是否已发送了验证码
     private boolean keyFlag=false; //验证码是否正确
     private TimeCountUntil timeCountUntil;
@@ -46,6 +52,15 @@ public class LogupActivity extends AppCompatActivity {
         button_getkey=(Button)findViewById(R.id.button_getkey);
         button_comfirm=(Button)findViewById(R.id.button_comfirm);
         imageButton_back=(ImageButton)findViewById(R.id.imageButton_back);
+        unameClear=(ImageView)findViewById(R.id.iv_unameClear);
+        pwdClear1=(ImageView)findViewById(R.id.iv_pwdClear);
+        pwdClear2=(ImageView)findViewById(R.id.iv_pwdClear2);
+        keyClear=(ImageView)findViewById(R.id.iv_keyClear);
+
+        EditTextClearTools.addClearListener(textView_phone,unameClear);
+        EditTextClearTools.addClearListener(textView_pwd1,pwdClear1);
+        EditTextClearTools.addClearListener(textView_pwd2,pwdClear2);
+        EditTextClearTools.addClearListener(textView_key,keyClear);
     }
 
     @Override
@@ -81,10 +96,6 @@ public class LogupActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 switch (view.getId()) {
-                    case  R.id.imageButton_back:
-                        Intent intentBack=new Intent(LogupActivity.this,LoginActivity.class);
-                        startActivity(intentBack);
-                        break;
                     case R.id.button_getkey:
                         if(isPhone()) {
                             timeCountUntil.start();
@@ -132,6 +143,14 @@ public class LogupActivity extends AppCompatActivity {
         };
         button_getkey.setOnClickListener(button);
         button_comfirm.setOnClickListener(button);
+
+        imageButton_back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intentBack=new Intent(LogupActivity.this,LoginActivity.class);
+                startActivity(intentBack);
+            }
+        });
     }
 
     //使用Handler来分发Message对象到主线程中，处理事件

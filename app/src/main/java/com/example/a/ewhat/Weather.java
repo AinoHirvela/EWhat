@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -26,7 +28,7 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
     private String city_key="101030100";
     private ImageView imageView_update;
     //天气信息
-    private TextView cityT,timeT,humidityT,weekT,pmDataT,pmQualityT,temperatureT,climateT,windT,cityNameT;
+    private TextView cityT,timeT,humidityT,weekT,pmDataT,pmQualityT,temperatureTH,temperatureTL,climateT,windT;
     private ImageView weatherStateImg,pmStateImg;
     private TodayWeather todayWeather=null;
 
@@ -47,8 +49,7 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
         imageView_update=(ImageView)findViewById(R.id.title_city_update);
         imageView_update.setOnClickListener(this);
         //title
-        cityNameT = (TextView)findViewById(R.id.title_city_name);
-
+        //cityNameT = (TextView)findViewById(R.id.title_city_name);
         //today weather
         cityT = (TextView)findViewById(R.id.todayinfo1_cityName);
         timeT = (TextView)findViewById(R.id.todayinfo1_updateTime);
@@ -56,21 +57,23 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
         weekT = (TextView)findViewById(R.id.todayinfo2_week);
         pmDataT = (TextView)findViewById(R.id.todayinfo1_pm25);
         pmQualityT = (TextView)findViewById(R.id.todayinfo1_pm25status);
-        temperatureT = (TextView)findViewById(R.id.todayinfo2_temperature);
+        temperatureTH = (TextView)findViewById(R.id.todayinfo2_temperatureHigh);
+        temperatureTL=(TextView)findViewById(R.id.todayinfo2_temperatureLow);
         climateT = (TextView)findViewById(R.id.todayinfo2_weatherState);
         windT = (TextView)findViewById(R.id.todayinfo2_wind);
 
         weatherStateImg = (ImageView)findViewById(R.id.todayinfo2_weatherStatusImg);
         pmStateImg = (ImageView)findViewById(R.id.todayinfo1_pm25img);
 
-        cityNameT.setText("NULL");
+        //cityNameT.setText("NULL");
         cityT.setText("NULL");
         timeT.setText("NULL");
         humidityT.setText("NULL");
         weekT.setText("NULL");
         //pmDataT.setText("NULL");
         pmQualityT.setText("NULL");
-        temperatureT.setText("NULL");
+        temperatureTH.setText("NULL");
+        temperatureTL.setText("NULL");
         climateT.setText("NULL");
         windT.setText("NULL");
     }
@@ -244,16 +247,17 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void updateTodayWeather(TodayWeather todayWeather) {
-        cityNameT.setText(todayWeather.getCity()+"天气");
+        //cityNameT.setText(todayWeather.getCity()+"天气");
         cityT.setText(todayWeather.getCity());
-        timeT.setText(todayWeather.getUpdatetime());
+        timeT.setText("今天"+todayWeather.getUpdatetime()+"发布");
         humidityT.setText("湿度: "+todayWeather.getShidu());
         pmDataT.setText(todayWeather.getPm25());
         pmQualityT.setText(todayWeather.getQuality());
         Calendar calendar=Calendar.getInstance();
         String month=String.valueOf(calendar.get(Calendar.MONTH)+1)+"月";
         weekT.setText(month+todayWeather.getDate());
-        temperatureT.setText(todayWeather.getHigh()+"~"+todayWeather.getLow());
+        temperatureTH.setText(todayWeather.getHigh().substring(2,todayWeather.getHigh().length()));
+        temperatureTL.setText(todayWeather.getLow().substring(2,todayWeather.getLow().length()));
         climateT.setText(todayWeather.getType());
         windT.setText("风力: "+todayWeather.getFengli());
 
@@ -261,36 +265,36 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
         if(todayWeather.getType()!=null) {
             switch(todayWeather.getType()) {
                 case "晴":
-                    weatherStateImg.setImageResource(R.drawable.sunny);
+                    weatherStateImg.setImageResource(R.mipmap.ic_sunny_big);
                     break;
                 case "阴":
-                    weatherStateImg.setImageResource(R.drawable.cloudy);
+                    weatherStateImg.setImageResource(R.mipmap.ic_cloudy_big);
                     break;
                 case "多云":
-                    weatherStateImg.setImageResource(R.drawable.shady);
+                    weatherStateImg.setImageResource(R.mipmap.ic_overcast_big);
                     break;
                 case "小雨":
-                    weatherStateImg.setImageResource(R.drawable.lightrain);
+                    weatherStateImg.setImageResource(R.mipmap.ic_lightrain_big);
                     break;
                 case "中雨":
                 case "大雨":
-                    weatherStateImg.setImageResource(R.drawable.rain);
+                    weatherStateImg.setImageResource(R.mipmap.ic_heavyrain_big);
                     break;
                 case "阵雨":
-                    weatherStateImg.setImageResource(R.drawable.shower);
+                    weatherStateImg.setImageResource(R.mipmap.ic_shower_big);
                     break;
                 case "雷阵雨":
-                    weatherStateImg.setImageResource(R.drawable.thundershower);
+                    weatherStateImg.setImageResource(R.mipmap.ic_thundeshowehail_big);
                     break;
                 case "阵雪":
                 case "暴雪":
                 case "小雪":
                 case "中雪":
                 case "大雪":
-                    weatherStateImg.setImageResource(R.drawable.snow);
+                    weatherStateImg.setImageResource(R.mipmap.ic_snow_big);
                     break;
                 case "雨夹雪":
-                    weatherStateImg.setImageResource(R.drawable.sleet);
+                    weatherStateImg.setImageResource(R.mipmap.ic_rainsnow_big);
                     break;
                 default:
                     break;

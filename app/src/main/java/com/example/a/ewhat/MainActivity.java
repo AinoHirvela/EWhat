@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         /*dbOpenHelper.getWritableDatabase();
                         Intent intentLogin=new Intent(MainActivity.this,LoginActivity.class);
                         startActivity(intentLogin);*/
-                        Intent intent=new Intent(MainActivity.this, Weather.class);
+                        Intent intent=new Intent(MainActivity.this, LoadingActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.my_tab:

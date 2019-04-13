@@ -52,7 +52,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     //用于加载和展示图片
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    
+
+    //圆形ImageView API
+    compile 'de.hdodenhof:circleimageview:3.0.0'
+    compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
 }
 
 //用户获取短信验证码

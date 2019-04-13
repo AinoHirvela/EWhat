@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="吃What"
+            android:text="吃什么?"
             android:textColor="@color/colorBlack"
             android:textSize="40sp" />
 
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="今天吃什么?"
+            android:text="选择困难症患者的福音"
             android:textColor="@color/colorBlack"
             android:textSize="14sp" />
     </LinearLayout>
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="吃What"
+            android:text="吃什么?"
             android:textColor="@color/smssdk_white"
             android:textSize="40sp" />
 
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="今天吃什么?"
+            android:text="选择困难症患者的福音"
             android:textColor="@color/smssdk_white"
             android:textSize="14sp" />
     </LinearLayout>
@@ -60,5 +60,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_food" />
+        android:src="@mipmap/coconut" />
 </RelativeLayout>
