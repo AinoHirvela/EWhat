@@ -63,6 +63,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import interfaces.heweather.com.interfacesmodule.bean.weather.*;
+import interfaces.heweather.com.interfacesmodule.view.HeConfig;
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //定义按钮
     private RadioButton locationButton;
     private RadioButton weatherButtonn;
-    private RadioButton addButton;
+    //private RadioButton addButton;
     private RadioButton foodButton;
     private RadioButton myButton;
     private TextView nowlocation;
@@ -93,6 +95,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //打开SQLiteStdio
+        SQLiteStudioService.instance().start(this);
+        //创建EWhat.db数据库
+        dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
+        //连接和风天气
+        HeConfig.init("HE1903191601381347","3c2f0d928abd44daa4acb19b57528ae6");
         //隐藏原标题
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         //定义ToolBar
@@ -110,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //实例化Button
         weatherButtonn=(RadioButton)findViewById(R.id.weather_tab);
         locationButton=(RadioButton)findViewById(R.id.location_tab);
-        addButton=(RadioButton)findViewById(R.id.add_tab);
+        //addButton=(RadioButton)findViewById(R.id.add_tab);
         foodButton=(RadioButton)findViewById(R.id.food_tab);
         myButton= (RadioButton) findViewById(R.id.my_tab);
         nowlocation=(TextView)findViewById(R.id.nowlocation);
@@ -152,8 +160,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     //天气、加号、食品库
                     //登录注册界面暂时写在天气下面
                     case R.id.weather_tab:
+                        /*dbOpenHelper.getWritableDatabase();
                         Intent intentLogin=new Intent(MainActivity.this,LoginActivity.class);
-                        startActivity(intentLogin);
+                        startActivity(intentLogin);*/
+                        Intent intent=new Intent(MainActivity.this, LoadingActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.my_tab:
                         Intent intent1=new Intent(MainActivity.this,MyActivity.class);
@@ -164,14 +175,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         };
         locationButton.setOnClickListener(radioButtonListener);
         weatherButtonn.setOnClickListener(radioButtonListener);
-        addButton.setOnClickListener(radioButtonListener);
+        //addButton.setOnClickListener(radioButtonListener);
         foodButton.setOnClickListener(radioButtonListener);
         myButton.setOnClickListener(radioButtonListener);
-
-        //打开SQLiteStdio
-        SQLiteStudioService.instance().start(this);
-        //创建EWhat.db数据库
-        dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
     }
 
 
@@ -179,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void initView(){
         RadioButton locationButton=(RadioButton)findViewById(R.id.location_tab);
         RadioButton weatherButton=(RadioButton)findViewById(R.id.weather_tab);
-        RadioButton addButton=(RadioButton)findViewById(R.id.add_tab);
+        //RadioButton addButton=(RadioButton)findViewById(R.id.add_tab);
         RadioButton foodButton=(RadioButton)findViewById(R.id.food_tab);
         RadioButton myButton=(RadioButton)findViewById(R.id.my_tab);
     }
@@ -190,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             foodList.add(food1);
             Food food2 =new Food("food2",R.drawable.message);
             foodList.add(food2);
-            Food food3 =new Food("food3",R.drawable.message);
-            foodList.add(food3);
+            //Food food3 =new Food("food3",R.drawable.message);
+            //foodList.add(food3);
             Food food4 =new Food("food4",R.drawable.message);
             foodList.add(food4);
             Food food5 =new Food("food5",R.drawable.message);
