@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -42,6 +43,7 @@ public class DetailActivity extends AppCompatActivity {
     String name;
     TextView foodName;
     TextView times;
+
     public int eattimes;
 
     //列表的适配器
@@ -53,8 +55,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ImageButton eattimes=(ImageButton)findViewById(R.id.eattimes);
-        ImageButton collect=(ImageButton)findViewById(R.id.collect);
+        ImageButton eatButton=(ImageButton)findViewById(R.id.eattimes);
+        ImageButton collectButton=(ImageButton)findViewById(R.id.collect);
         ImageView imageView=(ImageView)findViewById(R.id.foodimage) ;
         foodName=(TextView)findViewById(R.id.foodname);
         times=(TextView)findViewById(R.id.times);
@@ -69,11 +71,27 @@ public class DetailActivity extends AppCompatActivity {
             Glide.with(this).load(imageid).into(imageView);
             foodName.setText(name);
         }
-        eattimes.setImageResource(R.drawable.eattimes);
-        collect.setImageResource(R.drawable.collect);
+
+        //食用按钮
+        eatButton.setImageResource(R.drawable.eattimes);
+        eatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eatRequest();
+            }
+        });
+        //收藏按钮
+        collectButton.setImageResource(R.drawable.collect);
+        collectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectRequest();
+            }
+        });
 
         //发送请求
         sendMessage();
+
         initShops();
         ShopAdapter adapter=new ShopAdapter(DetailActivity.this,R.layout.shop_item,shopList);
         ListView listView=(ListView)findViewById(R.id.business);
@@ -86,6 +104,8 @@ public class DetailActivity extends AppCompatActivity {
                 Toast.makeText(DetailActivity.this,shop.getShopAddress(),Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     //向服务器发送请求
@@ -152,6 +172,100 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    private void eatRequest(){
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(10,TimeUnit.SECONDS)
+                .readTimeout(10,TimeUnit.SECONDS)
+                .build();
+
+        Request request=new Request.Builder()
+                .url(Constant.URL_EatRequest+"?foodName="+name+"&Uno=13000000001")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (e instanceof SocketTimeoutException){
+                    Looper.prepare();
+                    Toast.makeText(DetailActivity.this,"连接超时，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+                if (e instanceof ConnectException){
+                    //Log.i("TAG","连接失败");
+                    e.printStackTrace();
+                    Looper.prepare();
+                    Toast.makeText(DetailActivity.this,"连接错误，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //添加一个Toast
+                //将JSON内容转换为字符串
+                String responseData=response.body().string();
+                //返回一个JSON数组
+                JSONArray jsonArray=null;
+                try {
+                    //填写数组
+                    jsonArray=new JSONArray(responseData);
+                    JSONObject jsonObject=null;
+                    jsonObject=jsonArray.getJSONObject(0);
+                    Toast.makeText(DetailActivity.this,jsonObject.getString("消息"),Toast.LENGTH_SHORT).show();
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void collectRequest(){
+        OkHttpClient client=new OkHttpClient.Builder()
+                .readTimeout(10,TimeUnit.SECONDS)
+                .connectTimeout(10,TimeUnit.SECONDS)
+                .build();
+
+        Request request=new Request.Builder()
+                .url(Constant.URL_CollectRequest+"?name="+name)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (e instanceof SocketTimeoutException){
+                    Looper.prepare();
+                    Toast.makeText(DetailActivity.this,"连接超时，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+                if (e instanceof ConnectException){
+                    //Log.i("TAG","连接失败");
+                    e.printStackTrace();
+                    Looper.prepare();
+                    Toast.makeText(DetailActivity.this,"连接错误，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //添加一个Toast，或者加入动画
+                //将JSON内容转换为字符串
+                String responseData=response.body().string();
+                //返回一个JSON数组
+                JSONArray jsonArray=null;
+                //填写数组
+                try {
+                    jsonArray=new JSONArray(responseData);
+                    JSONObject jsonObject=null;
+                    jsonObject=jsonArray.getJSONObject(0);
+                    Toast.makeText(DetailActivity.this,jsonObject.getString("消息"),Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
     //这个地方是对列表内容的初始化
     private void initShops(){
         OkHttpClient client=new OkHttpClient.Builder()
@@ -219,8 +333,7 @@ public class DetailActivity extends AppCompatActivity {
             Shop shop=getItem(position);
             View view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
             TextView shopAddress=(TextView)view.findViewById(R.id.shop_address);
-            shopAddress.setText(shop.getShopAddress());
-
+            shopAddress.setText(shop.getShopName());
             return view;
         }
     }

@@ -2,6 +2,7 @@ package com.example.a.ewhat;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,25 +13,41 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Weather extends AppCompatActivity implements View.OnClickListener {
     private String city_key="101030100";
     private ImageView imageView_update;
     //天气信息
     private TextView cityT,timeT,humidityT,weekT,pmDataT,pmQualityT,temperatureTH,temperatureTL,climateT,windT;
+    private TextView jieqi;
+    private TextView foodRecommend;
     private ImageView weatherStateImg,pmStateImg;
     private TodayWeather todayWeather=null;
+
 
     //启动更新天气情况
     private Handler mHandler=new Handler() {
@@ -65,6 +82,10 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
         weatherStateImg = (ImageView)findViewById(R.id.todayinfo2_weatherStatusImg);
         pmStateImg = (ImageView)findViewById(R.id.todayinfo1_pm25img);
 
+        jieqi=(TextView)findViewById(R.id.jieqi);
+        foodRecommend=(TextView)findViewById(R.id.food_reccomend);
+
+
         //cityNameT.setText("NULL");
         cityT.setText("NULL");
         timeT.setText("NULL");
@@ -93,8 +114,149 @@ public class Weather extends AppCompatActivity implements View.OnClickListener {
             Toast.makeText(Weather.this,"网络已连通",Toast.LENGTH_SHORT).show();
             getWeatherDatafromNet(city_key);
         }
+
+        sendRecommend();
     }
 
+    private void sendRecommend(){
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10,TimeUnit.SECONDS)
+                .build();
+
+        Request request=new Request.Builder()
+                .url(Constant.URL_Recommend)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (e instanceof SocketTimeoutException){
+                    Looper.prepare();
+                    Toast.makeText(Weather.this,"连接超时，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+                if (e instanceof ConnectException){
+                    //Log.i("TAG","连接失败");
+                    e.printStackTrace();
+                    Looper.prepare();
+                    Toast.makeText(Weather.this,"连接错误，请稍后重试",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //将JSON内容转换为字符串
+                String responseData=response.body().string();
+                //返回一个JSON数组
+                JSONArray jsonArray=null;
+                try {
+                    //填写数组
+                    jsonArray=new JSONArray(responseData);
+                    for (int i=0;i<jsonArray.length();i++){
+                        JSONObject jsonObject=null;
+                        //获取第一个数据
+                        jsonObject=jsonArray.getJSONObject(i);
+                        //接下来为添加内容
+                        //final JSONArray finalJsonArray = jsonArray;
+                    }
+
+                    final JSONArray finalJsonArray = jsonArray;
+                    Weather.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //显示节气信息
+                            Calendar calendar=Calendar.getInstance();
+                            int month=calendar.get(Calendar.MONTH);
+                            int day=calendar.get(Calendar.DAY_OF_MONTH);
+                            //立春
+                            try {
+                                if (month==2&&day==5) {
+                                    jieqi.setText(finalJsonArray.getJSONObject(0).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(0).getString("描述"));
+                                }
+                                else if (month==2&&day==19){
+                                    jieqi.setText(finalJsonArray.getJSONObject(1).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(1).getString("描述"));
+                                }else if (month==3&&day==6){
+                                    jieqi.setText(finalJsonArray.getJSONObject(2).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(2).getString("描述"));
+                                }else if (month==3&&day==21){
+                                    jieqi.setText(finalJsonArray.getJSONObject(3).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(3).getString("描述"));
+                                }else if (month==4&&day==5){
+                                    jieqi.setText(finalJsonArray.getJSONObject(4).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(4).getString("描述"));
+                                }else if (month==4&&day==20){
+                                    jieqi.setText(finalJsonArray.getJSONObject(5).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(5).getString("描述"));
+                                }else if (month==5&&day==6){
+                                    jieqi.setText(finalJsonArray.getJSONObject(6).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(6).getString("描述"));
+                                }else if (month==5&&day==21){
+                                    jieqi.setText(finalJsonArray.getJSONObject(7).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(7).getString("描述"));
+                                }else if (month==6&&day==6){
+                                    jieqi.setText(finalJsonArray.getJSONObject(8).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(8).getString("描述"));
+                                }else if (month==6&&day==22){
+                                    jieqi.setText(finalJsonArray.getJSONObject(9).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(9).getString("描述"));
+                                }else if (month==7&&day==7){
+                                    jieqi.setText(finalJsonArray.getJSONObject(10).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(10).getString("描述"));
+                                }else if (month==7&&day==23){
+                                    jieqi.setText(finalJsonArray.getJSONObject(11).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(11).getString("描述"));
+                                }else if (month==8&&day==8){
+                                    jieqi.setText(finalJsonArray.getJSONObject(12).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(12).getString("描述"));
+                                }else if (month==8&&day==23){
+                                    jieqi.setText(finalJsonArray.getJSONObject(13).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(13).getString("描述"));
+                                }else if (month==9&&day==8){
+                                    jieqi.setText(finalJsonArray.getJSONObject(14).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(14).getString("描述"));
+                                }else if (month==9&&day==23){
+                                    jieqi.setText(finalJsonArray.getJSONObject(15).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(15).getString("描述"));
+                                }else if (month==10&&day==8){
+                                    jieqi.setText(finalJsonArray.getJSONObject(16).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(16).getString("描述"));
+                                }else if (month==10&&day==24){
+                                    jieqi.setText(finalJsonArray.getJSONObject(17).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(17).getString("描述"));
+                                }else if (month==11&&day==8){
+                                    jieqi.setText(finalJsonArray.getJSONObject(18).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(18).getString("描述"));
+                                }else if (month==11&&day==22){
+                                    jieqi.setText(finalJsonArray.getJSONObject(19).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(19).getString("描述"));
+                                }else if (month==12&&day==7){
+                                    jieqi.setText(finalJsonArray.getJSONObject(20).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(20).getString("描述"));
+                                }else if (month==12&&day==22){
+                                    jieqi.setText(finalJsonArray.getJSONObject(21).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(21).getString("描述"));
+                                }else if (month==1&&day==5){
+                                    jieqi.setText(finalJsonArray.getJSONObject(22).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(22).getString("描述"));
+                                }else if (month==1&&day==20){
+                                    jieqi.setText(finalJsonArray.getJSONObject(23).getString("节气"));
+                                    foodRecommend.setText(finalJsonArray.getJSONObject(23).getString("描述"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.title_city_update) {

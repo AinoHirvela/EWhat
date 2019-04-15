@@ -54,6 +54,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.Bmob;
@@ -327,7 +328,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         float[] values=event.values;
         if (sensorType==Sensor.TYPE_ACCELEROMETER){
             if (Math.abs(values[0])>14||Math.abs(values[1])>14||Math.abs(values[2])>14){
-                Toast.makeText(this,"不要摇啦！！",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(MainActivity.this,RandomActivity.class);
+                //产生一个随机数，并转化为字符串类型
+                Random random=new Random();
+                //真正用，不能以1开头
+                //int randNum=random.nextInt(20)+100000;
+                int randNum=123456;
+                //测试用
+                //int randNum=random.nextInt(1)+123456;
+                intent.putExtra("randNum",Integer.toString(randNum));
+                startActivity(intent);
             }
         }
     }
