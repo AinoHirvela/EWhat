@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,40 +16,60 @@
         android:id="@+id/foodname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="食物名称"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="您吃过0次"/>
+            android:text="您吃过0次"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-        <ImageButton
+        <com.ldoublem.thumbUplib.ThumbUpView
             android:id="@+id/eattimes"
-            android:scaleType="fitXY"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cracksColor="#33475f"
+            app:edgeColor="#9d55b8"
+            app:fillColor="#ea8010"
+            app:unlikeType="1"
+            android:layout_marginRight="13dp"
+            android:layout_marginEnd="13dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="220dip"
-            android:layout_below="@id/foodname" />
+            android:layout_alignParentEnd="true" />
 
-        <ImageButton
+        <com.varunest.sparkbutton.SparkButton
             android:id="@+id/collect"
-            android:scaleType="fitXY"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_toLeftOf="@id/eattimes"
-            android:layout_alignTop="@id/eattimes"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:sparkbutton_activeImage="@drawable/star_off"
+            app:sparkbutton_iconSize="38dp"
+            app:sparkbutton_inActiveImage="@drawable/star_on"
+            app:sparkbutton_primaryColor="@color/star_primary_color"
+            app:sparkbutton_secondaryColor="@color/star_secondary_color"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/eattimes"
+            android:layout_toStartOf="@+id/eattimes" />
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/business"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </ListView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/business"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </ListView>
+    </ScrollView>
+
 </LinearLayout>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <item android:color="#00C7B7"
+    <item android:color="@color/colorMyGreen"
         android:state_checked="true"/>
     <item android:color="#012742"/>
 

@@ -48,9 +48,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder>{
         holder.foodImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*int position=holder.getAdapterPosition();
-                Food food=mFoodList.get(position);
-                Toast.makeText(v.getContext(),"you click image"+food.getFoodName(),Toast.LENGTH_SHORT).show();*/
                 int position=holder.getAdapterPosition();
                 Food food=mFoodList.get(position);
                 Intent intent=new Intent(v.getContext(),DetailActivity.class);

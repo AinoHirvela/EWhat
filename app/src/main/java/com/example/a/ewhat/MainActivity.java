@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager mSensorManager;
     private Vibrator vibrator;
 
-    private DBOpenHelper dbOpenHelper;
+    //private DBOpenHelper dbOpenHelper;
     //定义按钮
     private RadioButton locationButton;
     private RadioButton weatherButtonn;
@@ -72,15 +72,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
         //打开SQLiteStdio
-        SQLiteStudioService.instance().start(this);
+        //SQLiteStudioService.instance().start(this);
         //创建EWhat.db数据库
-        dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
+        //dbOpenHelper=new DBOpenHelper(this,"EWhat.db",null,1);
         //连接和风天气
         HeConfig.init("HE1903191601381347","3c2f0d928abd44daa4acb19b57528ae6");
         //隐藏原标题
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         //定义ToolBar
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        //Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         //设置导航栏图标
         //toolbar.setNavigationIcon();
         //设置标题
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //设置标题颜色
         //toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         //toolbar.setSubtitleTextColor(getResources().getColor(android.R.color.white));
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
         //实例化Button
         weatherButtonn=(RadioButton)findViewById(R.id.weather_tab);
         locationButton=(RadioButton)findViewById(R.id.location_tab);
@@ -167,15 +167,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private void initFood(){
         for (int i=0;i<3;i++){
-            Food food1 =new Food("food1",R.drawable.message);
+            Food food1 =new Food("food1",R.drawable.view_animator_github);
             foodList.add(food1);
-            Food food2 =new Food("food2",R.drawable.message);
+            Food food2 =new Food("food2",R.drawable.view_animator_github);
             foodList.add(food2);
-            //Food food3 =new Food("food3",R.drawable.message);
-            //foodList.add(food3);
-            Food food4 =new Food("food4",R.drawable.message);
+            Food food3 =new Food("food3",R.drawable.view_animator_github);
+            foodList.add(food3);
+            Food food4 =new Food("food4",R.drawable.view_animator_github);
             foodList.add(food4);
-            Food food5 =new Food("food5",R.drawable.message);
+            Food food5 =new Food("food5",R.drawable.view_animator_github);
             foodList.add(food5);
         }
     }
@@ -191,9 +191,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         searchView.onActionViewExpanded();
 
         //显示提交按钮
-        searchView.setSubmitButtonEnabled(true);
+        //searchView.setSubmitButtonEnabled(true);
         //searchView.setQueryHint("查找自己喜欢的");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        /*searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //提交按钮的点击事件
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Log.i(TAG,"内容"+newText);
                 return true;
             }
-        });
+        });*/
         return true;
     }
 
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         public void onReceiveLocation(BDLocation location){
             try {
                 street=location.getAddrStr();
-                Toast.makeText(getApplicationContext(),street,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),street,Toast.LENGTH_LONG).show();
                 nowlocation.setText("目前位置："+street);
             }catch (Exception e){
                 e.printStackTrace();

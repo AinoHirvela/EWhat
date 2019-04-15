@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <LinearLayout
+        android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -70,14 +71,64 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="100dp">
+        android:minHeight="150dp">
 
         <ListView
             android:id="@+id/list_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
     </LinearLayout>
-
+ <!--   <LinearLayout
+        android:id="@+id/list"
+        style="@style/wrap_layout" >
+        &lt;!&ndash; 上圆角&ndash;&gt;
+        <LinearLayout
+            style="@style/top_layout"
+            android:weightSum="1">
+            <ImageView
+                style="@style/img_heart"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                style="@style/usertext"
+                android:text="我的收藏" />
+            <ImageView
+                android:id="@+id/like"
+                style="@style/img_arrow"
+                android:layout_weight="8.43" />
+        </LinearLayout>
+        &lt;!&ndash; 分割线 &ndash;&gt;
+        <View
+            style="@style/bg_line"/>
+        &lt;!&ndash; 无圆角&ndash;&gt;
+        <LinearLayout
+            style="@style/mid_layout">
+            <ImageView
+                style="@style/img_eaten"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                style="@style/usertext"
+                android:text="我吃过的" />
+            <ImageView
+                android:id="@+id/eaten"
+                style="@style/img_arrow"/>
+        </LinearLayout>
+        <View
+            style="@style/bg_line"/>
+        &lt;!&ndash; 下圆角&ndash;&gt;
+        <LinearLayout
+            style="@style/bottom_layout">
+            <ImageView
+                style="@style/img_report"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                style="@style/usertext"
+                android:text="一周报告" />
+            <ImageView
+                android:id="@+id/report"
+                style="@style/img_arrow"/>
+        </LinearLayout>
+    </LinearLayout>
+-->
     <!--<LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -104,7 +155,8 @@
             android:layout_height="wrap_content"
             android:background="@color/colorMyGreen"
             android:textColor="@color/smssdk_white"
-            android:text="登录" />
+            android:layout_marginTop="10dp"
+            android:text="查看主页" />
 
         <Button
             android:id="@+id/sequentially"
@@ -113,7 +165,7 @@
             android:background="@color/colorMyGreen"
             android:textColor="@color/smssdk_white"
             android:layout_marginTop="5dp"
-            android:text="查看主页" />
+            android:text="登录" />
 
 </LinearLayout>
 </LinearLayout>

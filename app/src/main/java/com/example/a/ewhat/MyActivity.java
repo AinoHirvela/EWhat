@@ -2,6 +2,7 @@ package com.example.a.ewhat;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,6 +104,30 @@ public class MyActivity extends AppCompatActivity {
                 toNewActivity(position);
             }
         });
+        /*ImageView like=(ImageView)findViewById(R.id.like);
+        ImageView eaten=(ImageView)findViewById(R.id.eaten);
+        ImageView report=(ImageView)findViewById(R.id.report);
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(MyActivity.this,LoginActivity.class);
+                startActivity(i);
+            }
+        });
+        eaten.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(MyActivity.this,activity_eat.class);
+                startActivity(i);
+            }
+        });
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(MyActivity.this,WeeklyActivity.class);
+                startActivity(i);
+            }
+        });*/
 
 
 
@@ -115,8 +141,7 @@ public class MyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //animateParallel();
-                dbOpenHelper.getWritableDatabase();
-                Intent i=new Intent(MyActivity.this,LoginActivity.class);
+                Intent i=new Intent(MyActivity.this,MainActivity.class);
                 startActivity(i);
             }
         });
@@ -132,7 +157,8 @@ public class MyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //animateSequentially();
-                Intent i=new Intent(MyActivity.this,MainActivity.class);
+                dbOpenHelper.getWritableDatabase();
+                Intent i=new Intent(MyActivity.this,LoginActivity.class);
                 startActivity(i);
             }
         });
