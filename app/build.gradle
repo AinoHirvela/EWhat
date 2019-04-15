@@ -43,8 +43,22 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile files('libs/BaiduLBS_Android.jar')
+
+    //用于对数据库进行操作
+    compile 'org.litepal.android:core:1.4.1'
+    //用于进行网络请求
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    //用于JSON解析
+    compile 'com.google.code.gson:gson:2.7'
+    //用于加载和展示图片
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    //圆形ImageView API
+    compile 'de.hdodenhof:circleimageview:3.0.0'
+    compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
 }
 
+//用户获取短信验证码
 apply plugin: 'com.mob.sdk'
 MobSDK {
     appKey "2aa87d0513a44"

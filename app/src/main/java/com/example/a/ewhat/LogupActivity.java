@@ -1,17 +1,24 @@
 package com.example.a.ewhat;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.mob.MobSDK;
-
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -22,11 +29,19 @@ public class LogupActivity extends AppCompatActivity {
     private TextView textView_key;
     private Button button_getkey;
     private Button button_comfirm;
+    private ImageButton imageButton_back;
     private EventHandler eventHandler;
-    private int time=60;
-    private boolean flag=true;
+    private ImageView unameClear;
+    private ImageView pwdClear1;
+    private ImageView pwdClear2;
+    private ImageView keyClear;
+    private boolean flag=true; //是否已发送了验证码
+    private boolean keyFlag=false; //验证码是否正确
+    private TimeCountUntil timeCountUntil;
     private String phone_number;
     private String key_number;
+    private String password;
+    private String TAG="TEST";
 
     //绑定获取界面控件
     public void init(){
@@ -36,6 +51,16 @@ public class LogupActivity extends AppCompatActivity {
         textView_key=(TextView)findViewById(R.id.editText_key);
         button_getkey=(Button)findViewById(R.id.button_getkey);
         button_comfirm=(Button)findViewById(R.id.button_comfirm);
+        imageButton_back=(ImageButton)findViewById(R.id.imageButton_back);
+        unameClear=(ImageView)findViewById(R.id.iv_unameClear);
+        pwdClear1=(ImageView)findViewById(R.id.iv_pwdClear);
+        pwdClear2=(ImageView)findViewById(R.id.iv_pwdClear2);
+        keyClear=(ImageView)findViewById(R.id.iv_keyClear);
+
+        EditTextClearTools.addClearListener(textView_phone,unameClear);
+        EditTextClearTools.addClearListener(textView_pwd1,pwdClear1);
+        EditTextClearTools.addClearListener(textView_pwd2,pwdClear2);
+        EditTextClearTools.addClearListener(textView_key,keyClear);
     }
 
     @Override
@@ -46,6 +71,12 @@ public class LogupActivity extends AppCompatActivity {
         init();
         //初始化MobSDK
         MobSDK.init(this);
+        //重新发送验证码倒计时
+        timeCountUntil=new TimeCountUntil(button_getkey,60000,1000);
+        //连接数据库
+        DBOpenHelper dbOpenHelper=new DBOpenHelper(LogupActivity.this,"EWhat.db",null,1);
+        dbOpenHelper.getWritableDatabase();
+        Log.i(TAG,"get database successfully");
 
         eventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {
@@ -67,6 +98,7 @@ public class LogupActivity extends AppCompatActivity {
                 switch (view.getId()) {
                     case R.id.button_getkey:
                         if(isPhone()) {
+                            timeCountUntil.start();
                             SMSSDK.getVerificationCode("86",phone_number);
                             textView_key.requestFocus();
                         }
@@ -75,6 +107,34 @@ public class LogupActivity extends AppCompatActivity {
                         if(isKeyCorrect())
                             SMSSDK.submitVerificationCode("86",phone_number,key_number);
                         flag=false;
+                        //Log.i(TAG,"get key successfully 1 "+keyFlag);
+                        if(setPassword()) {
+                            //调用DBOpenHelper
+                            DBOpenHelper dbOpenHelper=new DBOpenHelper(LogupActivity.this,"EWhat.db",null,1);
+                            SQLiteDatabase db=dbOpenHelper.getWritableDatabase();
+
+                            //根据输入的账号到数据库内查询
+                            Cursor cursor=db.query("User",new String[]{"Uno"},"Uno=?",new String[]{textView_phone.getText().toString()},null,null,null);
+                            Log.i(TAG,"enter successfully1");
+                            if(cursor!=null&&cursor.getCount()>=1) {
+                                Toast.makeText(LogupActivity.this,"该用户已存在",Toast.LENGTH_LONG).show();
+                                cursor.close();
+                            } else {
+                                Log.i(TAG,"enter successfully2");
+                                password=textView_pwd1.getText().toString().trim();
+                                phone_number=textView_phone.getText().toString().trim();
+                                ContentValues values=new ContentValues();
+                                values.put("Uno",phone_number);Log.i(TAG,"phone_number="+phone_number);
+                                values.put("Upwd",password);Log.i(TAG,"password="+password);
+                                long rowid=db.insert("User",null,values);Log.i(TAG,"rowid="+rowid);
+                                if(rowid!=-1) {
+                                    Toast.makeText(LogupActivity.this,"注册成功",Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(LogupActivity.this,"注册失败，请稍后重试",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            db.close();
+                        }
                         break;
                     default:
                         break;
@@ -83,6 +143,14 @@ public class LogupActivity extends AppCompatActivity {
         };
         button_getkey.setOnClickListener(button);
         button_comfirm.setOnClickListener(button);
+
+        imageButton_back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intentBack=new Intent(LogupActivity.this,LoginActivity.class);
+                startActivity(intentBack);
+            }
+        });
     }
 
     //使用Handler来分发Message对象到主线程中，处理事件
@@ -90,41 +158,33 @@ public class LogupActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what==-1){
-                //修改按钮控件显示倒计时
-                button_getkey.setText(time+"s");
-            } else if(msg.what==-2) {
-                //修改按钮控件，请求重新发送验证码
-                button_getkey.setText("重新发送");
-                button_getkey.setClickable(true);
-                time=60;
-            } else {
-                int event=msg.arg1;
-                int result=msg.arg2;
-                Object data=msg.obj;
-                if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                    if(result == SMSSDK.RESULT_COMPLETE) {
-                        boolean smart = (Boolean)data;
-                        if(smart) {
-                            Toast.makeText(getApplicationContext(),"该手机号已经注册过，请重新输入", Toast.LENGTH_LONG).show();
-                            textView_phone.requestFocus();
-                            return;
-                        }
+            int event=msg.arg1;
+            int result=msg.arg2;
+            Object data=msg.obj;
+            if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                if(result == SMSSDK.RESULT_COMPLETE) {
+                    boolean smart = (Boolean)data;
+                    if(smart) {
+                        Toast.makeText(getApplicationContext(),"该手机号已经注册过，请重新输入", Toast.LENGTH_LONG).show();
+                        textView_phone.requestFocus();
+                        return;
                     }
                 }
-                if(result==SMSSDK.RESULT_COMPLETE) {
-                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        Toast.makeText(getApplicationContext(), "验证码正确",
-                                Toast.LENGTH_LONG).show();
-                    }
+            }
+            if(result==SMSSDK.RESULT_COMPLETE) {
+                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                    keyFlag=true;
+                    Toast.makeText(getApplicationContext(), "验证码正确", Toast.LENGTH_LONG).show();
+                    Log.i(TAG,"get key successfully 2 "+keyFlag);
+                }
+            } else {
+                if(flag) {
+                    button_getkey.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(),"验证码获取失败，请重新获取", Toast.LENGTH_LONG).show();
+                    textView_phone.requestFocus();
                 } else {
-                    if(flag) {
-                        button_getkey.setVisibility(View.VISIBLE);
-                        Toast.makeText(getApplicationContext(),"验证码获取失败，请重新获取", Toast.LENGTH_LONG).show();
-                        textView_phone.requestFocus();
-                    } else {
-                        Toast.makeText(getApplicationContext(),"验证码错误", Toast.LENGTH_LONG).show();
-                    }
+                    keyFlag=false;
+                    Toast.makeText(getApplicationContext(),"验证码错误", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -165,6 +225,19 @@ public class LogupActivity extends AppCompatActivity {
         } else {
             key_number=textView_key.getText().toString().trim();
             return true;
+        }
+    }
+
+    private boolean setPassword() {
+        if(textView_pwd1.getText().toString().trim().length()<8||textView_pwd1.getText().toString().trim().length()>20) {
+            Toast.makeText(LogupActivity.this,"密码长度不合法",Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(textView_pwd1.getText().toString().equals(textView_pwd2.getText().toString())) {
+            password=textView_pwd1.getText().toString().trim();
+            return true;
+        } else {
+            Toast.makeText(LogupActivity.this,"两次输入密码不一致",Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 
