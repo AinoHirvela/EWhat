@@ -8,4 +8,9 @@
     <color name="colorBlack">#000000</color>
     <color name="colorGrey">#EBEBEB</color>
     <color name="colorLoginButton">#9CDAB1</color>
+
+    <color name="border_clo">#ccc</color>
+    <color name="text_clo">#88898E</color>
+    <color name="white">#fff</color>
+    <color name="blue">#9CDAB1</color>
 </resources>
