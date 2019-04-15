@@ -36,7 +36,7 @@ public class MyActivity extends AppCompatActivity {
     TextView percent;
     //设置显示的list View的信息
     //private String[] data={"我的收藏","我吃过的","周报"};
-    //判断点击的item
+    //判断点击的item//
     private void  toNewActivity(int position){
         Intent i;
         switch (position){

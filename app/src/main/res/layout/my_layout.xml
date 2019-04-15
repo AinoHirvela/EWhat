@@ -120,6 +120,7 @@
             <ImageView
                 style="@style/img_report"
                 android:layout_marginRight="8dp"/>
+                //
             <TextView
                 style="@style/usertext"
                 android:text="一周报告" />

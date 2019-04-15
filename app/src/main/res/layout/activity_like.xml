@@ -6,5 +6,5 @@
  <ListView
      android:id="@+id/list_view_like"
      android:layout_width="match_parent"
-     android:layout_height="330dp"/>
+     android:layout_height="330dp"/>//
 </LinearLayout>

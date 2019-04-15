@@ -30,7 +30,7 @@
                 android:textSize="15sp"
                 android:text="21"
                 android:layout_below="@id/name_like"/>
-            //表示收藏的标志
+            ///表示收藏的标志
             <ImageView
                 android:id="@+id/type_like"
                 android:layout_width="wrap_content"

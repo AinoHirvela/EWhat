@@ -37,7 +37,7 @@ public class activity_eat extends AppCompatActivity {
                 new String[]{"image_eaten","name_eaten","Calory_eaten","times_eaten"},
                 new int[]{R.id.image_eaten,R.id.name_eaten,R.id.Calory_eaten,R.id.times_eaten}
         );
-        //4关联适配器
+        //4关联适配器//
         ls.setAdapter(adapter);
         ls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

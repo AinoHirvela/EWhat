@@ -17,7 +17,7 @@ import java.util.Map;
  */
 
 public class LikeAdapter extends BaseAdapter {
-    List<Map<String,Object>> list;
+    List<Map<String,Object>> list;//
     LayoutInflater inflater;//设置反射器
     public LikeAdapter(Context context){
         this.inflater=LayoutInflater.from(context);
