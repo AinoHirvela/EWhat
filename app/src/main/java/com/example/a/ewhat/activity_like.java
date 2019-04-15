@@ -44,7 +44,7 @@ public class activity_like extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this, "点击"+position, Toast.LENGTH_SHORT).show();
-        ///想要实现的功能：根据position获取id,点击跳转到食物的页面
+        //想要实现的功能：根据position获取id,点击跳转到食物的页面
     }
 
     @Override

@@ -75,7 +75,7 @@
         <activity android:name=".LoadingActivity" />
         <activity android:name=".WeeklyActivity">
         </activity>
-        <activity android:name=".activity_like"></activity>//
+        <activity android:name=".activity_like"></activity>
         <activity android:name=".activity_eat"/>
         <activity android:name=".activity_zhou"/>
     </application>

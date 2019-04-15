@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/lv_pic"
         android:src="@drawable/like"
-       />
+       />//
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
